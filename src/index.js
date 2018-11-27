@@ -19,7 +19,6 @@ console.log('%c Ready to get DAWGED?', 'color: cyan')
 
 // Challenge 4 
 // Once we are able to load _all_ of the dog breeds onto the page, add javascript so that the user can filter breeds that start with a particular letter using a dropdown.
-
 // For example, if the user selects 'a' in the dropdown, only show the breeds with names that start with the letter a.For simplicity, the dropdown only includes the letters a - d.However, we can imagine expanding this to include the entire alphabet
 
 
@@ -30,8 +29,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const breedURL = "https://dog.ceo/api/breeds/list/all"
   const dogImageContainer = document.querySelector("#dog-image-container");
   const breedContainer = document.querySelector("#dog-breeds");
+  const breedDropdown = document.querySelector("#breed-dropdown");
+
+  // Challenge 3 
   breedContainer.addEventListener('click', function (event) {
-    event.target.style.color = "#" + ((1 << 24) * Math.random() | 0).toString(16)
+    // event.target.style.color = "#" + ((1 << 24) * Math.random() | 0).toString(16)
+    event.target.style.color = getRandomColor();
     // if (event.target.style.color === 'blue') {
     //   event.target.style.color = 'black';
     // } else {
@@ -73,6 +76,14 @@ document.addEventListener('DOMContentLoaded', function () {
       // breedContainer.innerHTML += `<li>${allBreeds}</li>` - UGLY 🤢
       breedContainer.innerHTML = createDogLis(allBreeds);
     });
+
+  breedDropdown.addEventListener('change', function (event) {
+    const selectedLetter = event.target.value; //  'a' 'b' 'c' or 'd'
+    const filteredBreeds = allBreeds.filter(function (breed) {
+      return breed[0] === (selectedLetter);
+    });
+    breedContainer.innerHTML = createDogLis(filteredBreeds);
+  });
 });
 
 
@@ -84,11 +95,12 @@ function createDogLis(breedArray) {
   return dogLiArray.join('');
 }
 
-// function getRandomColor() {
-//   var letters = '0123456789ABCDEF';
-//   var color = '#';
-//   for (var i = 0; i < 6; i++) {
-//     color += letters[Math.floor(Math.random() * 16)];
-//   }
-//   return color;
-// }
+// random colors function
+function getRandomColor() {
+  let letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
